@@ -8,6 +8,12 @@ require "prometheus/middleware/collector"
 require "prometheus/middleware/exporter"
 use Rack::Deflater
 
+#
+# Cathing SIGTERM and replacing with SIGINT.
+# Some Cloud-providers ignore STOPSIGLAN in the Dockerfile
+# This problem is found in Google Cloud Run
+trap "SIGTERM" do Process.kill("SIGINT", 0) end
+
 #use Prometheus::Middleware::Collector # This adds automatic metrics
 use Prometheus::Middleware::Exporter
 
