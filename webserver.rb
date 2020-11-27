@@ -80,6 +80,15 @@ class Webserver < Sinatra::Base
     [200, [@@ok_json]]
   end
 
+  #
+  # Base-endpoint for Kubernetes
+  get "/version" do
+    $logger.info({:message => "rack GET /ping"})
+    @@requests_total.increment(labels: { endpoint: "/ping" })
+
+    content_type :json
+    [200, [{version: "0.0.1"}.to_json]]
+  end
 
   #
   # Base-endpoint
