@@ -91,4 +91,14 @@ class Webserver < Sinatra::Base
     [200, [@@ok_json]]
   end
 
+  #
+  # Zero-endpoint
+  get "" do
+    $logger.info({:message => "rack GET 0"})
+    @@requests_total.increment(labels: { endpoint: "0" })
+
+    content_type :json
+    [200, [@@ok_json]]
+  end
+
 end
