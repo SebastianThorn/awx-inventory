@@ -43,11 +43,6 @@ class Webserver < Sinatra::Base
     set :logger, $logger
 
     #
-    # Set up env and variabels
-    username = ENV["USERNAME"]
-    password = ENV["PASSWORD"]
-
-    #
     # Set up Prometheus
     prometheus = Prometheus::Client.registry
     @@requests_total = Prometheus::Client::Counter.new(:requests_total, docstring: "total_requests", labels: [:endpoint])
@@ -61,7 +56,6 @@ class Webserver < Sinatra::Base
 
   end
 
-
   #
   # Base-endpoint for Kubernetes
   get "/readiness" do
@@ -69,6 +63,12 @@ class Webserver < Sinatra::Base
     [200, [@@ok_json]]
   end
 
+  #
+  # Base-endpoint for Kubernetes
+  get "/liveness" do
+    content_type :json
+    [200, [@@ok_json]]
+  end
 
   #
   # Base-endpoint for Kubernetes
