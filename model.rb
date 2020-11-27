@@ -5,12 +5,7 @@ class Model
 
   #
   # initialize, runs at start
-  def initialize(username, password)
-
-    #
-    # Set username and password if needed
-    @username = username
-    @password = password
+  def initialize()
 
   end
 

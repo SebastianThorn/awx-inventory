@@ -47,7 +47,7 @@ class Webserver < Sinatra::Base
     prometheus = Prometheus::Client.registry
     @@requests_total = Prometheus::Client::Counter.new(:requests_total, docstring: "total_requests", labels: [:endpoint])
     prometheus.register(@@requests_total)
-    @@model = Model.new(username, password)
+    @@model = Model.new()
     $logger.info({:message => "Configuration done!"})
 
     #
