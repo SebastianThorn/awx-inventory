@@ -24,6 +24,13 @@ class Webserver < Sinatra::Base
   configure do
 
     #
+    # This is a bit wierd, took some tome to figure out.
+    # REF: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer
+    # REF: https://github.com/sinatra/sinatra/issues/747
+    # REF: https://en.wikipedia.org/wiki/HTTP_referer
+    set :protection, :except => [:remote_referrer, :json_csrf]
+
+    #
     # Get JSON-logging
     $logger = Logger.new(STDOUT)
     $logger.formatter = proc do |severity, datetime, progname, msg|
