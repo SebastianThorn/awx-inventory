@@ -56,6 +56,11 @@ class Webserver < Sinatra::Base
 
   end
 
+  def base(path)
+    $logger.info({:message => "rack GET /#{path}"})
+    @@requests_total.increment(labels: { endpoint: path})
+  end
+
   #
   # Base-endpoint for Kubernetes
   get "/readiness" do
@@ -73,9 +78,7 @@ class Webserver < Sinatra::Base
   #
   # Base-endpoint for Kubernetes
   get "/ping" do
-    $logger.info({:message => "rack GET /ping"})
-    @@requests_total.increment(labels: { endpoint: "/ping" })
-
+    base("ping")
     content_type :json
     [200, [@@ok_json]]
   end
@@ -83,9 +86,7 @@ class Webserver < Sinatra::Base
   #
   # Base-endpoint for Kubernetes
   get "/version" do
-    $logger.info({:message => "rack GET /ping"})
-    @@requests_total.increment(labels: { endpoint: "/ping" })
-
+    base("version")
     content_type :json
     [200, [{version: "0.0.1"}.to_json]]
   end
@@ -93,19 +94,7 @@ class Webserver < Sinatra::Base
   #
   # Base-endpoint
   get "/" do
-    $logger.info({:message => "rack GET /"})
-    @@requests_total.increment(labels: { endpoint: "/" })
-    
-    content_type :json
-    [200, [@@ok_json]]
-  end
-
-  #
-  # Zero-endpoint
-  get "" do
-    $logger.info({:message => "rack GET 0"})
-    @@requests_total.increment(labels: { endpoint: "0" })
-
+    base("")
     content_type :json
     [200, [@@ok_json]]
   end
